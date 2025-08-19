@@ -1,124 +1,56 @@
-// stubs.cpp
-// Exact stub implementations for missing libopenmpt codec functions
-// These match the precise C++ mangled symbol names that the linker expects
+// stubs.cpp  
+// Weak symbol implementations for missing libopenmpt codec functions
+// These will be linked into the final binary to resolve missing symbols
 
-// We need to recreate the exact namespace and type structure that libopenmpt uses
-namespace mpt {
-    namespace mpt_libopenmpt {
-        // These are directly under mpt_libopenmpt, not under IO
-        struct Utf8PathTraits {};
-        
-        template<typename PathTraits, bool isUnicode>
-        struct BasicPathString {};
-        
-        namespace IO {
-            struct FileCursorTraitsFileData {};
-            struct FileCursorTraitsMemory {};
-            struct FileCursorFilenameTraitsNone {};
-            
-            template<typename PathString>
-            struct FileCursorFilenameTraits {};
-        }
-    }
-}
-
-namespace OpenMPT {
-    namespace detail {
-        template<typename CursorTraits, typename FilenameTraits>
-        class FileReader {
-        public:
-            // Empty implementation - just needs to exist for linking
-        };
+// Create weak symbol implementations using extern "C" to avoid name mangling issues
+extern "C" {
+    
+    // Weak implementations that return "format not supported"
+    // These match the missing symbols reported by the linker
+    
+    __attribute__((weak))
+    bool _ZN7OpenMPT10CSoundFile13ReadMP3SampleEtRNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEEbb() {
+        return false; // MP3 not supported
     }
     
-    // Define the ModLoadingFlags enum that's used in the signatures
-    enum class ModLoadingFlags : unsigned int {
-        loadCompleteModule = 0
-    };
+    __attribute__((weak))  
+    bool _ZN7OpenMPT10CSoundFile15ReadOpusSampleEtRNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEE() {
+        return false; // Opus not supported
+    }
     
-    class CSoundFile {
-    public:
-        // Exact stub implementations for the missing symbols
-        
-        // MP3 Sample reading
-        static bool ReadMP3Sample(
-            unsigned short smp, 
-            detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData, 
-                             mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<
-                                 mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>& file,
-            bool mayNormalize, 
-            bool includeInstrumentEnvelopes
-        ) {
-            return false; // MP3 not supported in this build
-        }
-        
-        // Opus Sample reading  
-        static bool ReadOpusSample(
-            unsigned short smp,
-            detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData,
-                             mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<
-                                 mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>& file
-        ) {
-            return false; // Opus not supported in this build
-        }
-        
-        // Vorbis Sample reading
-        static bool ReadVorbisSample(
-            unsigned short smp,
-            detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData,
-                             mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<
-                                 mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>& file
-        ) {
-            return false; // Vorbis not supported in this build  
-        }
-        
-        // Media Foundation Sample reading (Windows only)
-        static bool ReadMediaFoundationSample(
-            unsigned short smp,
-            detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData,
-                             mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<
-                                 mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>& file,
-            bool mayNormalize
-        ) {
-            return false; // Media Foundation not available on iOS/macOS
-        }
-        
-        // XM format probing
-        static bool ProbeFileHeaderXM(
-            detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsMemory,
-                             mpt::mpt_libopenmpt::IO::FileCursorFilenameTraitsNone> file,
-            const unsigned long long* headerMagic
-        ) {
-            return false; // XM probing not implemented in this build
-        }
-        
-        // MO3 format probing
-        static bool ProbeFileHeaderMO3(
-            detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsMemory,
-                             mpt::mpt_libopenmpt::IO::FileCursorFilenameTraitsNone> file,
-            const unsigned long long* headerMagic
-        ) {
-            return false; // MO3 probing not implemented in this build
-        }
-        
-        // XM format reading
-        static bool ReadXM(
-            detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData,
-                             mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<
-                                 mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>& file,
-            ModLoadingFlags loadFlags
-        ) {
-            return false; // XM format not supported in this build
-        }
-        
-        // MO3 format reading  
-        static bool ReadMO3(
-            detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData,
-                             mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<
-                                 mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>& file,
-            ModLoadingFlags loadFlags
-        ) {
-            return false; // MO3 format not supported in this build
-        }
-    };
+    __attribute__((weak))
+    bool _ZN7OpenMPT10CSoundFile17ReadVorbisSampleEtRNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEE() {
+        return false; // Vorbis not supported  
+    }
+    
+    __attribute__((weak))
+    bool _ZN7OpenMPT10CSoundFile26ReadMediaFoundationSampleEtRNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEEb() {
+        return false; // Media Foundation not supported on iOS/macOS
+    }
+    
+    __attribute__((weak))
+    bool _ZN7OpenMPT10CSoundFile18ProbeFileHeaderXMENS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO22FileCursorTraitsMemoryENS4_24FileCursorFilenameTraitsNoneEEEPKy() {
+        return false; // XM format probing not supported
+    }
+    
+    __attribute__((weak))
+    bool _ZN7OpenMPT10CSoundFile19ProbeFileHeaderMO3ENS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO22FileCursorTraitsMemoryENS4_24FileCursorFilenameTraitsNoneEEEPKy() {
+        return false; // MO3 format probing not supported  
+    }
+    
+    __attribute__((weak))
+    bool _ZN7OpenMPT10CSoundFile6ReadXMERNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEENS0_14ModLoadingFlagsE() {
+        return false; // XM format reading not supported
+    }
+    
+    __attribute__((weak))
+    bool _ZN7OpenMPT10CSoundFile7ReadMO3ERNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEENS0_14ModLoadingFlagsE() {
+        return false; // MO3 format reading not supported
+    }
+    
+    // Placeholder to ensure this file generates object code
+    __attribute__((weak))
+    void __openmpt_codec_stubs_placeholder() {
+        // This ensures the object file is created and linked
+    }
 }
