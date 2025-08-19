@@ -38,6 +38,9 @@ let package = Package(
             cSettings: [
                 .headerSearchPath("include"),
                 .define("LIBOPENMPT_STATIC")
+            ],
+            cxxSettings: [
+                .headerSearchPath("include")
             ]
         ),
         
