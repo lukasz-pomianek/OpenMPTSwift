@@ -34,8 +34,8 @@ let package = Package(
             name: "CLibOpenMPT",
             dependencies: ["LibOpenMPT"],
             path: "Sources/CLibOpenMPT",
-            publicHeadersPath: "include",
             sources: ["CLibOpenMPT.c", "stubs.cpp"],
+            publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath("include"),
                 .define("LIBOPENMPT_STATIC")
