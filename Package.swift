@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "OpenMPTSwift",
     platforms: [
-        .iOS(.v14),
-        .macOS(.v11),
+        .iOS(.v17),
+        .macOS(.v15),
     ],
     products: [
         .library(
@@ -21,27 +21,23 @@ let package = Package(
         .target(
             name: "OpenMPTSwift",
             dependencies: ["CLibOpenMPT"],
-            path: "Sources/OpenMPTSwift",
-            linkerSettings: [
-                .linkedLibrary("c++"),
-                .linkedLibrary("z"),
-                .linkedFramework("AudioToolbox", .when(platforms: [.iOS]))
-            ]
+            path: "Sources/OpenMPTSwift"
         ),
         
-        // C bridge layer - minimal implementation with weak symbol stubs
+        // C bridge layer - minimal implementation
         .target(
             name: "CLibOpenMPT",
             dependencies: ["LibOpenMPT"],
             path: "Sources/CLibOpenMPT",
-            sources: ["CLibOpenMPT.c", "stubs.cpp"],
+            sources: ["CLibOpenMPT.c"],
             publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath("include"),
                 .define("LIBOPENMPT_STATIC")
             ],
-            cxxSettings: [
-                .headerSearchPath("include")
+            linkerSettings: [
+                .linkedLibrary("c++"),
+                .linkedLibrary("z")
             ]
         ),
         

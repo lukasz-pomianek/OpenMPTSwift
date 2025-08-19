@@ -179,7 +179,8 @@ public final class OpenMPTPlayer {
                 buffer[i] = 0.0
             }
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 if let openMPTError = error as? OpenMPTError {
                     self.delegate?.playerDidEncounterError(self, error: openMPTError)
                 } else {
