@@ -26,7 +26,12 @@ let package = Package(
                 .linkedLibrary("c++"),
                 .linkedLibrary("z"),
                 .linkedFramework("AudioToolbox", .when(platforms: [.iOS])),
-                .unsafeFlags(["-Wl,-undefined,dynamic_lookup"], .when(platforms: [.iOS, .macOS]))
+                .unsafeFlags([
+                    "-Wl,-U,_ZN7OpenMPT10CSoundFile13ReadMP3SampleEtRN7OpenMPT6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEEbb",
+                    "-Wl,-U,_ZN7OpenMPT10CSoundFile15ReadOpusSampleEtRN7OpenMPT6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEE",
+                    "-Wl,-U,_ZN7OpenMPT10CSoundFile17ReadVorbisSampleEtRN7OpenMPT6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEE",
+                    "-Wl,-undefined,dynamic_lookup"
+                ], .when(platforms: [.iOS, .macOS]))
             ]
         ),
         
