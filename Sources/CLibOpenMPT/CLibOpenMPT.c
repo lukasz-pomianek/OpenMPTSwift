@@ -66,6 +66,30 @@ int _ZN7OpenMPT10CSoundFile26ReadMediaFoundationSampleEtRNS_6detail10FileReaderI
     return 0;
 }
 
+// Alternative Media Foundation signature (25 instead of 26)
+int _ZN7OpenMPT10CSoundFile25ReadMediaFoundationSampleEtRNS_6detail10FileReaderIN3mpt14mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_24FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEEb(void) {
+    // Media Foundation support not available on iOS/macOS - return false
+    return 0;
+}
+
+// Additional XM probe stub (alternative signature)
+void* _ZN7OpenMPT10CSoundFile17ProbeFileHeaderXMENS_6detail10FileReaderIN3mpt14mpt_libopenmpt2IO22FileCursorTraitsMemoryENS5_28FileCursorFilenameTraitsNoneEEEPKy(void) {
+    // XM probe support not available - return nullptr
+    return 0;
+}
+
+// Additional XM probe stub (18 variant)
+void* _ZN7OpenMPT10CSoundFile18ProbeFileHeaderXMFENS_6detail10FileReaderIN3mpt14mpt_libopenmpt2IO22FileCursorTraitsMemoryENS5_28FileCursorFilenameTraitsNoneEEEPKy(void) {
+    // XM probe support not available - return nullptr
+    return 0;
+}
+
+// Additional MO3 probe stub (18 variant)
+void* _ZN7OpenMPT10CSoundFile18ProbeFileHeaderMO3ENS_6detail10FileReaderIN3mpt14mpt_libopenmpt2IO22FileCursorTraitsMemoryENS5_28FileCursorFilenameTraitsNoneEEEPKy(void) {
+    // MO3 probe support not available - return nullptr
+    return 0;
+}
+
 #ifdef __cplusplus
 }
 #endif
