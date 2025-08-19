@@ -33,13 +33,7 @@ let package = Package(
             publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath("include"),
-                .define("LIBOPENMPT_STATIC"),
-                .define("NO_MP3"),
-                .define("NO_OGG"),
-                .define("NO_VORBIS"),
-                .define("NO_OPUS"),
-                .define("NO_XM"),
-                .define("NO_MO3")
+                .define("LIBOPENMPT_STATIC")
             ],
             linkerSettings: [
                 .linkedLibrary("c++"),
