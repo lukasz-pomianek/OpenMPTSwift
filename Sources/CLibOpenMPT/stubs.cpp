@@ -5,6 +5,7 @@
 // We need to recreate the exact namespace and type structure that libopenmpt uses
 namespace mpt {
     namespace mpt_libopenmpt {
+        // These are directly under mpt_libopenmpt, not under IO
         struct Utf8PathTraits {};
         
         template<typename PathTraits, bool isUnicode>
