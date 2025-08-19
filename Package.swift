@@ -29,12 +29,13 @@ let package = Package(
             ]
         ),
         
-        // C bridge layer - minimal implementation
+        // C bridge layer - minimal implementation with weak symbol stubs
         .target(
             name: "CLibOpenMPT",
             dependencies: ["LibOpenMPT"],
             path: "Sources/CLibOpenMPT",
             publicHeadersPath: "include",
+            sources: ["CLibOpenMPT.c", "stubs.cpp"],
             cSettings: [
                 .headerSearchPath("include"),
                 .define("LIBOPENMPT_STATIC")
