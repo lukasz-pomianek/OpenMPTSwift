@@ -176,5 +176,5 @@ libopenmpt is available under the BSD license. See [libopenmpt licensing](https:
 ## Credits
 
 - **libopenmpt** by the OpenMPT team
-- **Swift wrapper** by [Your Name]
+- **Swift wrapper** by Łukasz Pomianek
 - Based on the original **Impulse Tracker** by Jeffrey Lim
