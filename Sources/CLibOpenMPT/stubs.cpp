@@ -2,55 +2,92 @@
 // Weak symbol implementations for missing libopenmpt codec functions
 // These will be linked into the final binary to resolve missing symbols
 
-// Create weak symbol implementations using extern "C" to avoid name mangling issues
-extern "C" {
-    
-    // Weak implementations that return "format not supported"
-    // These match the missing symbols reported by the linker
-    
+// Forward declarations for types needed in function signatures
+namespace mpt { 
+    namespace mpt_libopenmpt {
+        struct Utf8PathTraits;
+        template<typename T, bool B> struct BasicPathString;
+        namespace IO {
+            struct FileCursorTraitsFileData;
+            struct FileCursorTraitsMemory;
+            struct FileCursorFilenameTraitsNone;
+            template<typename T> struct FileCursorFilenameTraits;
+        }
+    }
+}
+
+namespace OpenMPT {
+    namespace detail {
+        template<typename T, typename U> struct FileReader;
+    }
+    struct CSoundFile {
+        enum ModLoadingFlags : unsigned int;
+    };
+}
+
+// Define the exact C++ function signatures and provide weak implementations
+namespace OpenMPT {
     __attribute__((weak))
-    bool _ZN7OpenMPT10CSoundFile13ReadMP3SampleEtRNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEEbb() {
+    bool CSoundFile::ReadMP3Sample(unsigned short, 
+                                   detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData, 
+                                                    mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>&, 
+                                   bool, bool) {
         return false; // MP3 not supported
     }
     
-    __attribute__((weak))  
-    bool _ZN7OpenMPT10CSoundFile15ReadOpusSampleEtRNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEE() {
+    __attribute__((weak))
+    bool CSoundFile::ReadOpusSample(unsigned short,
+                                    detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData, 
+                                                     mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>&) {
         return false; // Opus not supported
     }
     
     __attribute__((weak))
-    bool _ZN7OpenMPT10CSoundFile17ReadVorbisSampleEtRNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEE() {
-        return false; // Vorbis not supported  
+    bool CSoundFile::ReadVorbisSample(unsigned short,
+                                      detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData, 
+                                                       mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>&) {
+        return false; // Vorbis not supported
     }
     
     __attribute__((weak))
-    bool _ZN7OpenMPT10CSoundFile26ReadMediaFoundationSampleEtRNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEEb() {
+    bool CSoundFile::ReadMediaFoundationSample(unsigned short,
+                                               detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData, 
+                                                                mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>&, 
+                                               bool) {
         return false; // Media Foundation not supported on iOS/macOS
     }
     
     __attribute__((weak))
-    bool _ZN7OpenMPT10CSoundFile18ProbeFileHeaderXMENS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO22FileCursorTraitsMemoryENS4_24FileCursorFilenameTraitsNoneEEEPKy() {
+    bool CSoundFile::ProbeFileHeaderXM(detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsMemory, 
+                                                          mpt::mpt_libopenmpt::IO::FileCursorFilenameTraitsNone>, 
+                                       const unsigned long long*) {
         return false; // XM format probing not supported
     }
     
     __attribute__((weak))
-    bool _ZN7OpenMPT10CSoundFile19ProbeFileHeaderMO3ENS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO22FileCursorTraitsMemoryENS4_24FileCursorFilenameTraitsNoneEEEPKy() {
-        return false; // MO3 format probing not supported  
+    bool CSoundFile::ProbeFileHeaderMO3(detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsMemory, 
+                                                           mpt::mpt_libopenmpt::IO::FileCursorFilenameTraitsNone>, 
+                                        const unsigned long long*) {
+        return false; // MO3 format probing not supported
     }
     
     __attribute__((weak))
-    bool _ZN7OpenMPT10CSoundFile6ReadXMERNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEENS0_14ModLoadingFlagsE() {
+    bool CSoundFile::ReadXM(detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData, 
+                                              mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>&, 
+                            ModLoadingFlags) {
         return false; // XM format reading not supported
     }
     
     __attribute__((weak))
-    bool _ZN7OpenMPT10CSoundFile7ReadMO3ERNS_6detail10FileReaderIN3mpt15mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_23FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEENS0_14ModLoadingFlagsE() {
+    bool CSoundFile::ReadMO3(detail::FileReader<mpt::mpt_libopenmpt::IO::FileCursorTraitsFileData, 
+                                               mpt::mpt_libopenmpt::IO::FileCursorFilenameTraits<mpt::mpt_libopenmpt::BasicPathString<mpt::mpt_libopenmpt::Utf8PathTraits, false>>>&, 
+                             ModLoadingFlags) {
         return false; // MO3 format reading not supported
     }
-    
-    // Placeholder to ensure this file generates object code
-    __attribute__((weak))
-    void __openmpt_codec_stubs_placeholder() {
-        // This ensures the object file is created and linked
-    }
+}
+
+// Placeholder to ensure this file generates object code
+extern "C" __attribute__((weak))
+void __openmpt_codec_stubs_placeholder() {
+    // This ensures the object file is created and linked
 }
