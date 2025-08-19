@@ -16,6 +16,7 @@ final class OpenMPTSwiftTests: XCTestCase {
         XCTAssertNil(module.moduleInfo)
     }
     
+    @MainActor
     func testPlayerCreation() throws {
         let player = try OpenMPTPlayer()
         XCTAssertNil(player.moduleInfo)

@@ -6,9 +6,10 @@
 //
 
 import Foundation
-import AVFoundation
+@preconcurrency import AVFoundation
 
 /// Delegate protocol for playback events
+@MainActor
 public protocol OpenMPTPlayerDelegate: AnyObject {
     func playerDidStartPlaying(_ player: OpenMPTPlayer)
     func playerDidStopPlaying(_ player: OpenMPTPlayer)
@@ -16,16 +17,38 @@ public protocol OpenMPTPlayerDelegate: AnyObject {
     func playerDidEncounterError(_ player: OpenMPTPlayer, error: OpenMPTError)
 }
 
+/// Wrapper to make non-Sendable types work across actor boundaries
+struct UncheckedSendable<Value>: @unchecked Sendable {
+    let value: Value
+    
+    init(_ value: Value) {
+        self.value = value
+    }
+}
+
 /// High-level audio player for tracker modules using AVAudioEngine
+@MainActor
 public final class OpenMPTPlayer {
     public weak var delegate: OpenMPTPlayerDelegate?
     
-    private let module = OpenMPTModule()
-    private let audioEngine = AVAudioEngine()
+    private let moduleWrapper: UncheckedSendable<OpenMPTModule>
+    private let audioEngineWrapper: UncheckedSendable<AVAudioEngine>
     private var sourceNode: AVAudioSourceNode?
-    private var audioFormat: AVAudioFormat
+    private let audioFormatWrapper: UncheckedSendable<AVAudioFormat>
     private var isPlaying = false
     private var positionTimer: Timer?
+    
+    private var module: OpenMPTModule {
+        moduleWrapper.value
+    }
+    
+    private var audioEngine: AVAudioEngine {
+        audioEngineWrapper.value
+    }
+    
+    private var audioFormat: AVAudioFormat {
+        audioFormatWrapper.value
+    }
     
     public var moduleInfo: ModuleInfo? {
         return module.moduleInfo
@@ -39,14 +62,17 @@ public final class OpenMPTPlayer {
         guard let format = AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 2) else {
             throw OpenMPTError.loadFailed("Failed to create audio format")
         }
-        self.audioFormat = format
+        self.audioFormatWrapper = UncheckedSendable(format)
+        self.moduleWrapper = UncheckedSendable(OpenMPTModule())
+        self.audioEngineWrapper = UncheckedSendable(AVAudioEngine())
         
         try setupAudioSession()
         setupAudioEngine()
     }
     
     deinit {
-        stop()
+        // The audioEngine will be cleaned up automatically
+        // We can't call stop() here due to actor isolation
     }
     
     /// Load a tracker module from file data
@@ -120,7 +146,7 @@ public final class OpenMPTPlayer {
     
     private func setupAudioEngine() {
         let sourceNode = AVAudioSourceNode { [weak self] _, _, frameCount, audioBufferList -> OSStatus in
-            guard let self = self, self.isPlaying else {
+            guard let self = self else {
                 // Silence
                 let bufferList = UnsafeMutableAudioBufferListPointer(audioBufferList)
                 for buffer in bufferList {
@@ -147,7 +173,12 @@ public final class OpenMPTPlayer {
         audioEngine.stop()
     }
     
-    private func renderAudio(frameCount: UInt32, audioBufferList: UnsafeMutablePointer<AudioBufferList>) -> OSStatus {
+    @MainActor
+    private func notifyError(_ error: OpenMPTError) {
+        delegate?.playerDidEncounterError(self, error: error)
+    }
+    
+    nonisolated private func renderAudio(frameCount: UInt32, audioBufferList: UnsafeMutablePointer<AudioBufferList>) -> OSStatus {
         let bufferList = UnsafeMutableAudioBufferListPointer(audioBufferList)
         
         guard let buffer = bufferList[0].mData?.assumingMemoryBound(to: Float.self) else {
@@ -155,8 +186,8 @@ public final class OpenMPTPlayer {
         }
         
         do {
-            let samples = try module.renderAudio(
-                sampleRate: Int32(audioFormat.sampleRate), 
+            let samples = try moduleWrapper.value.renderAudio(
+                sampleRate: Int32(audioFormatWrapper.value.sampleRate), 
                 frameCount: Int(frameCount)
             )
             
@@ -179,13 +210,11 @@ public final class OpenMPTPlayer {
                 buffer[i] = 0.0
             }
             
-            DispatchQueue.main.async { [weak self] in
+            // Report error to main actor
+            let errorToReport = error as? OpenMPTError ?? .renderFailed
+            Task { @MainActor [weak self] in
                 guard let self = self else { return }
-                if let openMPTError = error as? OpenMPTError {
-                    self.delegate?.playerDidEncounterError(self, error: openMPTError)
-                } else {
-                    self.delegate?.playerDidEncounterError(self, error: .renderFailed)
-                }
+                self.notifyError(errorToReport)
             }
         }
         
@@ -194,8 +223,10 @@ public final class OpenMPTPlayer {
     
     private func startPositionUpdates() {
         positionTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            guard let self = self, let position = self.module.getCurrentPosition() else { return }
-            self.delegate?.playerDidUpdatePosition(self, position: position)
+            Task { @MainActor [weak self] in
+                guard let self = self, let position = self.module.getCurrentPosition() else { return }
+                self.delegate?.playerDidUpdatePosition(self, position: position)
+            }
         }
     }
     
