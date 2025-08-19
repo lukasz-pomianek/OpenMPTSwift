@@ -25,7 +25,8 @@ let package = Package(
             linkerSettings: [
                 .linkedLibrary("c++"),
                 .linkedLibrary("z"),
-                .linkedFramework("AudioToolbox", .when(platforms: [.iOS]))
+                .linkedFramework("AudioToolbox", .when(platforms: [.iOS])),
+                .unsafeFlags(["-Wl,-undefined,dynamic_lookup"], .when(platforms: [.iOS, .macOS]))
             ]
         ),
         
