@@ -33,11 +33,20 @@ let package = Package(
             publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath("include"),
-                .define("LIBOPENMPT_STATIC")
+                .define("LIBOPENMPT_STATIC"),
+                .define("NO_MP3"),
+                .define("NO_OGG"),
+                .define("NO_VORBIS"),
+                .define("NO_OPUS"),
+                .define("NO_XM"),
+                .define("NO_MO3")
             ],
             linkerSettings: [
                 .linkedLibrary("c++"),
-                .linkedLibrary("z")
+                .linkedLibrary("z"),
+                .linkedFramework("CoreAudio", .when(platforms: [.iOS, .macOS, .tvOS, .watchOS])),
+                .linkedFramework("AudioToolbox", .when(platforms: [.iOS, .macOS, .tvOS, .watchOS])),
+                .linkedFramework("AVFoundation", .when(platforms: [.iOS, .macOS, .tvOS, .watchOS]))
             ]
         ),
         
