@@ -30,8 +30,20 @@ int _ZN7OpenMPT10CSoundFile14ReadOpusSampleEtRNS_6detail10FileReaderIN3mpt14mpt_
     return 0;
 }
 
+// Opus support stub with reference parameter (alternative signature)
+int _ZN7OpenMPT10CSoundFile14ReadOpusSampleEtRNS_6detail10FileReaderIN3mpt14mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_24FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEER(void) {
+    // Opus support not available - return false
+    return 0;
+}
+
 // Vorbis support stub (if NO_VORBIS is defined)
 int _ZN7OpenMPT10CSoundFile16ReadVorbisSampleEtRNS_6detail10FileReaderIN3mpt14mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_24FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEE(void) {
+    // Vorbis support not available - return false
+    return 0;
+}
+
+// Vorbis support stub with reference parameter (alternative signature)
+int _ZN7OpenMPT10CSoundFile16ReadVorbisSampleEtRNS_6detail10FileReaderIN3mpt14mpt_libopenmpt2IO24FileCursorTraitsFileDataENS5_24FileCursorFilenameTraitsINS4_15BasicPathStringINS4_14Utf8PathTraitsELb0EEEEEEER(void) {
     // Vorbis support not available - return false
     return 0;
 }
