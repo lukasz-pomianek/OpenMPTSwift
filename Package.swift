@@ -34,7 +34,10 @@ let package = Package(
             publicHeadersPath: "include",
             cSettings: [
                 .headerSearchPath("include"),
-                .define("LIBOPENMPT_STATIC")
+                .define("LIBOPENMPT_STATIC"),
+                .define("NO_MPG123"),
+                .define("NO_OGG"),
+                .define("NO_VORBIS")
             ],
             linkerSettings: [
                 .linkedLibrary("c++"),

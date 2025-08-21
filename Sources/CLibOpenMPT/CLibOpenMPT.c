@@ -43,3 +43,34 @@ __attribute__((used))
 void* clibopenmpt_get_symbol_table(void) {
     return _openmpt_symbol_table;
 }
+
+// Stub implementations for missing codec functions
+// These are needed because libOpenMPT 0.8.2 references external codec libraries
+
+// MPG123 stubs
+int mpg123_delete(void* mh) { return 0; }
+int mpg123_exit(void) { return 0; }
+int mpg123_getformat(void* mh, long* rate, int* channels, int* encoding) { return -1; }
+int mpg123_id3(void* mh, void** v1, void** v2) { return 0; }
+int mpg123_info2(void* mh, void* mi) { return -1; }
+int mpg123_init(void) { return 0; }
+long mpg123_length64(void* mh) { return -1; }
+void* mpg123_new(const char* decoder, int* error) { return 0; }
+int mpg123_open_handle64(void* mh, void* iohandle) { return -1; }
+long mpg123_outblock(void* mh) { return 0; }
+int mpg123_param2(void* mh, int type, long value, double fvalue) { return -1; }
+int mpg123_read(void* mh, unsigned char* outmemory, size_t outmemsize, size_t* done) { return -1; }
+int mpg123_reader64(void* mh, void* r_read, void* r_lseek, void* cleanup) { return -1; }
+int mpg123_scan(void* mh) { return -1; }
+
+// Ogg Vorbis stubs  
+int ov_clear(void* vf) { return 0; }
+char* ov_comment(void* vf, int link) { return 0; }
+void* ov_info(void* vf, int link) { return 0; }
+int ov_open_callbacks(void* datasource, void* vf, const char* initial, long ibytes, void* callbacks) { return -1; }
+long ov_pcm_total(void* vf, int i) { return -1; }
+long ov_read_float(void* vf, float*** pcm_channels, int samples, int* bitstream) { return -1; }
+int ov_streams(void* vf) { return 0; }
+
+// Vorbis stubs
+int vorbis_comment_query(void* vc, const char* tag, int count) { return 0; }
