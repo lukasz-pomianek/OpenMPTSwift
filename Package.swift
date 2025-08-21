@@ -38,7 +38,9 @@ let package = Package(
             ],
             linkerSettings: [
                 .linkedLibrary("c++"),
-                .linkedLibrary("z")
+                .linkedLibrary("z"),
+                .linkedFramework("AudioToolbox", .when(platforms: [.iOS, .macOS])),
+                .linkedFramework("CoreAudio", .when(platforms: [.iOS, .macOS]))
             ]
         ),
         
