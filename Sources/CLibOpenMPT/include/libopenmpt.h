@@ -28,8 +28,8 @@ extern const char * openmpt_get_string( const char * key );
 extern void openmpt_free_string( const char * str );
 
 // Module creation and destruction
-extern openmpt_module * openmpt_module_create_from_memory2( const void * filedata, size_t filesize, void * logfunc, void * loguser, void * errfunc, void * erruser, int * error, const char * * error_message, const void * ctls );
-extern void openmpt_module_destroy( openmpt_module * mod );
+__attribute__((visibility("default"))) extern openmpt_module * openmpt_module_create_from_memory2( const void * filedata, size_t filesize, void * logfunc, void * loguser, void * errfunc, void * erruser, int * error, const char * * error_message, const void * ctls );
+__attribute__((visibility("default"))) extern void openmpt_module_destroy( openmpt_module * mod );
 
 // Playback control
 extern int openmpt_module_set_repeat_count( openmpt_module * mod, int32_t repeat_count );

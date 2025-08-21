@@ -20,7 +20,7 @@ let package = Package(
         // Native Swift API layer
         .target(
             name: "OpenMPTSwift",
-            dependencies: ["CLibOpenMPT"],
+            dependencies: ["CLibOpenMPT", "LibOpenMPT"],
             path: "Sources/OpenMPTSwift"
         ),
         
@@ -37,10 +37,7 @@ let package = Package(
             ],
             linkerSettings: [
                 .linkedLibrary("c++"),
-                .linkedLibrary("z"),
-                .linkedFramework("CoreAudio", .when(platforms: [.iOS, .macOS, .tvOS, .watchOS])),
-                .linkedFramework("AudioToolbox", .when(platforms: [.iOS, .macOS, .tvOS, .watchOS])),
-                .linkedFramework("AVFoundation", .when(platforms: [.iOS, .macOS, .tvOS, .watchOS]))
+                .linkedLibrary("z")
             ]
         ),
         
