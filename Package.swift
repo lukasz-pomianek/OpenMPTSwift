@@ -12,7 +12,7 @@ let package = Package(
     products: [
         .library(
             name: "OpenMPTSwift",
-            targets: ["OpenMPTSwift"]
+            targets: ["OpenMPTSwift", "LibOpenMPT"]
         ),
     ],
     dependencies: [],
@@ -20,7 +20,7 @@ let package = Package(
         // Native Swift API layer
         .target(
             name: "OpenMPTSwift",
-            dependencies: ["CLibOpenMPT", "LibOpenMPT"],
+            dependencies: ["CLibOpenMPT"],
             path: "Sources/OpenMPTSwift"
         ),
         
