@@ -1,5 +1,6 @@
 module CLibOpenMPT [system] {
     header "libopenmpt.h"
+    link "LibOpenMPT"
     link "c++"
     link "z"
     export *

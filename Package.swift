@@ -11,7 +11,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "OpenMPTSwift",
+            name: "OpenMPTSwift", 
+            type: .static,
             targets: ["OpenMPTSwift", "LibOpenMPT"]
         ),
     ],
