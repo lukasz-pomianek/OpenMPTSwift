@@ -63,6 +63,11 @@ int mpg123_read(void* mh, unsigned char* outmemory, size_t outmemsize, size_t* d
 int mpg123_reader64(void* mh, void* r_read, void* r_lseek, void* cleanup) { return -1; }
 int mpg123_scan(void* mh) { return -1; }
 
+// Additional MPG123 symbols that may be missing on simulator
+int _mpg123_encsize(int encoding) { return 0; }
+int _mpg123_format2(int encoding) { return 0; }
+int _mpg123_format_none(void) { return 0; }
+
 // Ogg Vorbis stubs  
 int ov_clear(void* vf) { return 0; }
 char* ov_comment(void* vf, int link) { return 0; }
