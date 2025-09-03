@@ -56,6 +56,45 @@ extern int32_t openmpt_module_get_current_row( openmpt_module * mod );
 extern int32_t openmpt_module_get_current_speed( openmpt_module * mod );
 extern double openmpt_module_get_current_tempo2( openmpt_module * mod );
 
+// Pattern data access functions
+extern int32_t openmpt_module_get_pattern_num_rows( openmpt_module * mod, int32_t pattern );
+extern uint8_t openmpt_module_get_pattern_row_channel_command( openmpt_module * mod, int32_t pattern, int32_t row, int32_t channel, int command );
+extern const char * openmpt_module_get_pattern_name( openmpt_module * mod, int32_t index );
+extern int32_t openmpt_module_get_pattern_rows_per_beat( openmpt_module * mod, int32_t pattern );
+extern int32_t openmpt_module_get_pattern_rows_per_measure( openmpt_module * mod, int32_t pattern );
+
+// Order and sequence functions
+extern int32_t openmpt_module_get_num_orders( openmpt_module * mod );
+extern int32_t openmpt_module_get_order_pattern( openmpt_module * mod, int32_t order );
+extern double openmpt_module_set_position_order_row( openmpt_module * mod, int32_t order, int32_t row );
+
+// Extended module information
+extern int32_t openmpt_module_get_num_subsongs( openmpt_module * mod );
+extern int32_t openmpt_module_get_selected_subsong( openmpt_module * mod );
+extern int openmpt_module_select_subsong( openmpt_module * mod, int32_t subsong );
+
+// Control and rendering parameters
+extern int32_t openmpt_module_get_render_param( openmpt_module * mod, int param );
+extern int openmpt_module_set_render_param( openmpt_module * mod, int param, int32_t value );
+extern const char * openmpt_module_ctl_get( openmpt_module * mod, const char * ctl );
+extern int openmpt_module_ctl_set( openmpt_module * mod, const char * ctl, const char * value );
+
+// Pattern cell structure (for compatibility)
+typedef struct openmpt_pattern_cell {
+    uint8_t note;
+    uint8_t instrument;
+    uint8_t volume;
+    uint8_t effect;
+    uint8_t effect_param;
+} openmpt_pattern_cell;
+
+// Pattern editing functions (note: libopenmpt is read-only, these are stubs)
+extern int32_t openmpt_module_get_pattern_rows( openmpt_module * mod, int32_t pattern );
+extern int openmpt_module_get_pattern_cell( openmpt_module * mod, int32_t pattern, int32_t channel, int32_t row, openmpt_pattern_cell * cell );
+extern int openmpt_module_set_pattern_cell( openmpt_module * mod, int32_t pattern, int32_t channel, int32_t row, const openmpt_pattern_cell * cell );
+extern int openmpt_module_insert_pattern_row( openmpt_module * mod, int32_t pattern, int32_t row );
+extern int openmpt_module_delete_pattern_row( openmpt_module * mod, int32_t pattern, int32_t row );
+
 #ifdef __cplusplus
 }
 #endif

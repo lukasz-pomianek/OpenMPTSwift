@@ -35,6 +35,26 @@ static void* _openmpt_symbol_table[] = {
     (void*)openmpt_module_read_interleaved_float_stereo,
     (void*)openmpt_module_set_position_seconds,
     (void*)openmpt_module_set_repeat_count,
+    (void*)openmpt_module_get_pattern_num_rows,
+    (void*)openmpt_module_get_pattern_row_channel_command,
+    (void*)openmpt_module_get_pattern_name,
+    (void*)openmpt_module_get_pattern_rows_per_beat,
+    (void*)openmpt_module_get_pattern_rows_per_measure,
+    (void*)openmpt_module_get_num_orders,
+    (void*)openmpt_module_get_order_pattern,
+    (void*)openmpt_module_set_position_order_row,
+    (void*)openmpt_module_get_num_subsongs,
+    (void*)openmpt_module_get_selected_subsong,
+    (void*)openmpt_module_select_subsong,
+    (void*)openmpt_module_get_render_param,
+    (void*)openmpt_module_set_render_param,
+    (void*)openmpt_module_ctl_get,
+    (void*)openmpt_module_ctl_set,
+    (void*)openmpt_module_get_pattern_rows,
+    (void*)openmpt_module_get_pattern_cell,
+    (void*)openmpt_module_set_pattern_cell,
+    (void*)openmpt_module_insert_pattern_row,
+    (void*)openmpt_module_delete_pattern_row,
     0
 };
 
@@ -79,3 +99,43 @@ int ov_streams(void* vf) { return 0; }
 
 // Vorbis stubs
 int vorbis_comment_query(void* vc, const char* tag, int count) { return 0; }
+
+// Pattern editing bridge functions
+// Note: libopenmpt is read-only, so editing functions are stubs that return errors
+
+int32_t openmpt_module_get_pattern_rows(openmpt_module* mod, int32_t pattern) {
+    // This maps to the existing function with different name
+    return openmpt_module_get_pattern_num_rows(mod, pattern);
+}
+
+int openmpt_module_get_pattern_cell(openmpt_module* mod, int32_t pattern, int32_t channel, int32_t row, openmpt_pattern_cell* cell) {
+    if (!mod || !cell) return 0;
+    
+    // Use the existing pattern data access function to read pattern data
+    // This is a simplified implementation - in reality we'd need to parse the raw pattern data
+    cell->note = openmpt_module_get_pattern_row_channel_command(mod, pattern, row, channel, 0); // note
+    cell->instrument = openmpt_module_get_pattern_row_channel_command(mod, pattern, row, channel, 1); // instrument  
+    cell->volume = openmpt_module_get_pattern_row_channel_command(mod, pattern, row, channel, 2); // volume
+    cell->effect = openmpt_module_get_pattern_row_channel_command(mod, pattern, row, channel, 3); // effect
+    cell->effect_param = openmpt_module_get_pattern_row_channel_command(mod, pattern, row, channel, 4); // effect param
+    
+    return 1; // success
+}
+
+int openmpt_module_set_pattern_cell(openmpt_module* mod, int32_t pattern, int32_t channel, int32_t row, const openmpt_pattern_cell* cell) {
+    // libopenmpt is read-only - editing is not supported
+    // Return 0 to indicate failure/not supported
+    return 0;
+}
+
+int openmpt_module_insert_pattern_row(openmpt_module* mod, int32_t pattern, int32_t row) {
+    // libopenmpt is read-only - editing is not supported
+    // Return 0 to indicate failure/not supported  
+    return 0;
+}
+
+int openmpt_module_delete_pattern_row(openmpt_module* mod, int32_t pattern, int32_t row) {
+    // libopenmpt is read-only - editing is not supported
+    // Return 0 to indicate failure/not supported
+    return 0;
+}

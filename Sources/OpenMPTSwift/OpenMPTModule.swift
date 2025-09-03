@@ -53,7 +53,7 @@ public struct PlaybackPosition {
 
 /// Swift wrapper for libopenmpt module playback
 public final class OpenMPTModule {
-    private var module: OpaquePointer?
+    internal var module: OpaquePointer?
     private var _moduleInfo: ModuleInfo?
     
     public var isLoaded: Bool {
