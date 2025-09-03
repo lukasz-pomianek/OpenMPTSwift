@@ -13,6 +13,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,6 +21,15 @@ extern "C" {
 
 // Forward declare the opaque module type
 typedef struct openmpt_module openmpt_module;
+
+// Pattern cell structure for our custom bridge functions
+typedef struct openmpt_pattern_cell {
+    uint8_t note;
+    uint8_t instrument;
+    uint8_t volume;
+    uint8_t effect;
+    uint8_t effect_param;
+} openmpt_pattern_cell;
 
 // Essential function declarations for the module lifecycle
 extern uint32_t openmpt_get_library_version(void);
@@ -72,15 +82,6 @@ extern int32_t openmpt_module_get_render_param( openmpt_module * mod, int param 
 extern int openmpt_module_set_render_param( openmpt_module * mod, int param, int32_t value );
 extern const char * openmpt_module_ctl_get( openmpt_module * mod, const char * ctl );
 extern int openmpt_module_ctl_set( openmpt_module * mod, const char * ctl, const char * value );
-
-// Pattern cell structure for our custom bridge functions
-typedef struct openmpt_pattern_cell {
-    uint8_t note;
-    uint8_t instrument;
-    uint8_t volume;
-    uint8_t effect;
-    uint8_t effect_param;
-} openmpt_pattern_cell;
 
 // Custom bridge functions implemented in CLibOpenMPT.c
 // Note: These are wrappers/stubs since libopenmpt is read-only
