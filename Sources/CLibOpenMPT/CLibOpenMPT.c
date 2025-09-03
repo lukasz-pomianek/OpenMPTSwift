@@ -35,6 +35,7 @@ static void* _openmpt_symbol_table[] = {
     (void*)openmpt_module_read_interleaved_float_stereo,
     (void*)openmpt_module_set_position_seconds,
     (void*)openmpt_module_set_repeat_count,
+    // Only include functions that exist in the XCFramework
     (void*)openmpt_module_get_pattern_num_rows,
     (void*)openmpt_module_get_pattern_row_channel_command,
     (void*)openmpt_module_get_pattern_name,
@@ -50,11 +51,7 @@ static void* _openmpt_symbol_table[] = {
     (void*)openmpt_module_set_render_param,
     (void*)openmpt_module_ctl_get,
     (void*)openmpt_module_ctl_set,
-    (void*)openmpt_module_get_pattern_rows,
-    (void*)openmpt_module_get_pattern_cell,
-    (void*)openmpt_module_set_pattern_cell,
-    (void*)openmpt_module_insert_pattern_row,
-    (void*)openmpt_module_delete_pattern_row,
+    // Our custom bridge functions are implemented below, not in symbol table
     0
 };
 
