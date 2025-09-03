@@ -4,6 +4,19 @@
 
 #include "libopenmpt.h"
 
+// Define our custom pattern cell struct for C compilation
+// This ensures the struct is available during C compilation
+#ifndef OPENMPT_PATTERN_CELL_DEFINED
+#define OPENMPT_PATTERN_CELL_DEFINED
+typedef struct openmpt_pattern_cell {
+    uint8_t note;
+    uint8_t instrument;
+    uint8_t volume;
+    uint8_t effect;
+    uint8_t effect_param;
+} openmpt_pattern_cell;
+#endif
+
 // Test function that uses OpenMPT to verify linking
 // This forces the linker to include the XCFramework
 int clibopenmpt_test_linking(void) {

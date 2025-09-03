@@ -23,6 +23,8 @@ extern "C" {
 typedef struct openmpt_module openmpt_module;
 
 // Pattern cell structure for our custom bridge functions
+#ifndef OPENMPT_PATTERN_CELL_DEFINED
+#define OPENMPT_PATTERN_CELL_DEFINED
 typedef struct openmpt_pattern_cell {
     uint8_t note;
     uint8_t instrument;
@@ -30,6 +32,7 @@ typedef struct openmpt_pattern_cell {
     uint8_t effect;
     uint8_t effect_param;
 } openmpt_pattern_cell;
+#endif
 
 // Essential function declarations for the module lifecycle
 extern uint32_t openmpt_get_library_version(void);
