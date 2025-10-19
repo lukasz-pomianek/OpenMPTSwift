@@ -22,6 +22,7 @@ OpenMPTSwift supports a wide range of tracker formats including:
 - 🎛️ **Module information** access (instruments, samples, patterns)
 - 🔄 **Seeking support** for interactive playback
 - 📦 **Swift Package Manager** integration
+- 🎚️ **Zero-configuration** high-level player that just works
 
 ## Requirements
 
@@ -43,6 +44,8 @@ dependencies: [
 
 ### Basic Playback
 
+OpenMPTPlayer provides a complete, zero-configuration audio player that handles all AVAudioEngine setup automatically:
+
 ```swift
 import OpenMPTSwift
 
@@ -51,6 +54,7 @@ class MusicPlayer: OpenMPTPlayerDelegate {
     
     func loadAndPlayModule() {
         do {
+            // Creates player with fully configured AVAudioEngine
             player = try OpenMPTPlayer()
             player?.delegate = self
             
@@ -58,7 +62,7 @@ class MusicPlayer: OpenMPTPlayerDelegate {
             let moduleData = try Data(contentsOf: moduleURL)
             try player?.loadModule(from: moduleData)
             
-            // Start playback
+            // Start playback - everything is ready to go!
             try player?.play()
             
         } catch {
@@ -122,8 +126,12 @@ C-compatible wrapper around libopenmpt for Swift interop.
 
 ### 3. OpenMPTSwift (Swift API)
 High-level Swift API providing:
-- `OpenMPTModule`: Low-level module access
-- `OpenMPTPlayer`: High-level audio player with AVAudioEngine integration
+- `OpenMPTModule`: Low-level module access for custom audio pipelines
+- `OpenMPTPlayer`: Complete zero-configuration audio player with:
+  - Automatic AVAudioEngine setup and configuration
+  - Real-time audio rendering with proper threading
+  - Position tracking and seeking capabilities
+  - Delegate-based event handling
 
 ## Building libopenmpt for iOS
 

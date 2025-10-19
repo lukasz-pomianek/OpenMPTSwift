@@ -165,6 +165,7 @@ public final class OpenMPTPlayer {
     
     private func startAudioEngine() throws {
         if !audioEngine.isRunning {
+            audioEngine.prepare()
             try audioEngine.start()
         }
     }
