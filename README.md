@@ -26,9 +26,9 @@ OpenMPTSwift supports a wide range of tracker formats including:
 
 ## Requirements
 
-- iOS 14.0+ / macOS 11.0+
-- Xcode 13.0+
-- Swift 5.5+
+- iOS 17.0+ / macOS 15.0+
+- Xcode 16.0+
+- Swift 6.0+
 
 ## Installation
 
@@ -36,9 +36,41 @@ Add OpenMPTSwift to your project using Swift Package Manager:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/OpenMPTSwift.git", from: "1.0.0")
+    .package(url: "https://github.com/lpomianek/OpenMPTSwift.git", from: "1.0.0")
 ]
 ```
+
+> The minimum deployment targets follow the Swift 6 manifest. If you need earlier platform support, pin to an older release or
+> use a custom fork with adjusted deployment targets.
+
+## API Overview
+
+### `OpenMPTModule`
+
+Low-level wrapper that exposes libopenmpt directly. Use it to:
+
+- Load module data and query metadata via `moduleInfo`
+- Render interleaved stereo audio with `renderAudio(sampleRate:frameCount:)`
+- Inspect instruments and samples via `getInstrumentNames()` / `getSampleNames()`
+- Seek playback using seconds or order/row helpers from the pattern editing extensions
+
+### `OpenMPTPlayer`
+
+High-level player that wires up `AVAudioEngine` for you. It provides:
+
+- A simple `loadModule(from:)` + `play()` flow with automatic engine setup
+- Delegate callbacks for lifecycle (`playerDidStartPlaying`, `playerDidStopPlaying`) and position updates
+- Safe error reporting on the main actor when the render callback encounters problems
+
+### `OpenMPTPatternEditor`
+
+Extension methods on `OpenMPTModule` that mirror libopenmpt's pattern APIs for reading cells, manipulating orders, and working
+with subsongs and render parameters. libopenmpt itself is read-only—write attempts will surface `OpenMPTPatternError.readOnlyModule`.
+
+## Usage
+
+See [`docs/USAGE.md`](docs/USAGE.md) for end-to-end examples that cover loading modules, rendering audio, responding to player
+events, and working with patterns.
 
 ## Quick Start
 
